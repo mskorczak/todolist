@@ -15,6 +15,7 @@ class TodoList
 		int get_item_count() const;
 		vector<Item> get_list() const;
 		string get_todo_title() const;
+		vector<Item> search_item(string search_term) const;
 	private:
 		vector<Item> todo_list;
 		string todo_title;
@@ -60,10 +61,26 @@ string TodoList::get_todo_title() const
 	return todo_title;
 }
 
+vector<Item> TodoList::search_item(string search_term) const
+{
+	vector<Item> found;
+	cout << get_item_count() << endl;
+	for(int i = 0; i < get_item_count(); i++)
+	{
+		//check title and description
+		if(get_list()[i].get_item_title().find(search_term) != string::npos || get_list()[i].get_item_title().find(search_term) != string::npos)
+		{
+			cout << get_list()[i].get_item_title() << " " << get_list()[i].get_item_desc() << " " << search_term << " was found" << endl;
+			found.push_back(get_list()[i]);
+		}
+		//check time
+	}
+	return found;
+}
+
 void display(TodoList todo)
 {
 	cout << "Todo Title: " << todo.get_todo_title() << endl;
-
 	for(int i = 0; i < todo.get_item_count(); i++)
 	{
 		cout << todo.get_list()[i];
@@ -75,7 +92,11 @@ int main()
 {
 	TodoList list1("list 1");
 	list1.add_item("", "", time(NULL), time(NULL));
+	list1.add_item("test 2", "big stinky description", time(NULL), time(NULL));
+	list1.add_item("search BIG","desc", time(NULL), time(NULL));
 	display(list1);
+	list1.search_item("search");
+	list1.search_item("test");
 	return 0;
 }
 
