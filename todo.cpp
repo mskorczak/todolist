@@ -13,7 +13,6 @@ class TodoList
 		TodoList(string title);
 		void add_item(string title, string desc, time_t set, time_t due);
 		void delete_item(string search_term);
-		void delete_item(vector<int> ids);
 		void delete_item(int id);
 		void swap_list(vector<Item> new_list);
 		int get_item_count() const;
@@ -116,6 +115,15 @@ vector<int> TodoList::search_item(string search_term) const
 	return found;
 }
 
+void TodoList::delete_item(string search_term)
+{
+	vector<int> ids = search_item(search_term);
+	for(int i = 0; i < ids.size(); i++)
+	{
+		delete_item(ids[i]);
+	}
+}
+
 void TodoList::delete_item(int id){
 	vector<Item> new_list;
 	for(int i = 0; i < get_item_count(); i++)
@@ -149,9 +157,12 @@ int main()
 	list1.search_item("test");
 	list1.search_item("13:23:00");
 	list1.search_item("10:41:00");
-	list1.delete_item(2);
+	list1.delete_item("test");
 	display(list1);
-	cout << list1.get_item_count() << endl;
+	Item test = list1.get_list().at(0);
+	cout << test << endl;
+	test.set_item_status(true);
+	cout << test << endl;
 	return 0;
 }
 
