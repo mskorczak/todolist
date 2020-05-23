@@ -12,6 +12,10 @@ class TodoList
 	public:
 		TodoList(string title);
 		void add_item(string title, string desc, time_t set, time_t due);
+		void delete_item(string search_term);
+		void delete_item(vector<int> ids);
+		void delete_item(int id);
+		void swap_list(vector<Item> new_list);
 		int get_item_count() const;
 		vector<Item> get_list() const;
 		string get_todo_title() const;
@@ -61,6 +65,11 @@ string TodoList::get_todo_title() const
 	return todo_title;
 }
 
+void TodoList::swap_list(vector<Item> new_list)
+{
+	todo_list = new_list;
+}
+
 vector<int> TodoList::search_item(string search_term) const
 {
 	vector<int> found;
@@ -72,9 +81,9 @@ vector<int> TodoList::search_item(string search_term) const
 			//cout << get_list()[i] << " search_term: " << search_term << endl;
 			found.push_back(get_list()[i].get_item_id());
 		}
+		//check time
+		//assumes that time will be given as HH:MM:SS
 		if(search_term.find(":") != string::npos) {
-			//check time
-			//assumes that time will be given as HH:MM:SS
 			size_t prev = 0, pos = 0;
 			vector<int> tokens;
 			do{
@@ -94,16 +103,29 @@ vector<int> TodoList::search_item(string search_term) const
 			//this will not take seconds into account
 			if(((tokens[0] == tm_set->tm_hour) && (tokens[1] == tm_set->tm_min)) || ((tokens[0] == tm_due->tm_hour) && (tokens[1] == tm_due->tm_min)))
 			{
-				//cout << get_list()[i] << " search_term: " << search_term << endl;
 				found.push_back(get_list()[i].get_item_id());
 			}
 		}
 	}
+	/* for debugging the found vector
 	for(int i = 0; i < found.size(); i++)
 	{
 		cout << found[i] << endl;
 	}
+	*/
 	return found;
+}
+
+void TodoList::delete_item(int id){
+	vector<Item> new_list;
+	for(int i = 0; i < get_item_count(); i++)
+	{
+		if(!(id == get_list()[i].get_item_id())){
+			cout << get_list()[i] << endl;
+			new_list.push_back(get_list()[i]);
+		}
+	}
+	swap_list(new_list);
 }
 
 void display(TodoList todo)
@@ -122,11 +144,14 @@ int main()
 	list1.add_item("", "", time(NULL), time(NULL));
 	list1.add_item("test 2", "big stinky description", time(NULL), time(NULL));
 	list1.add_item("search BIG","desc", time(NULL), time(NULL));
-	//display(list1);
+	display(list1);
 	list1.search_item("search");
 	list1.search_item("test");
-	list1.search_item("09:02:21");
+	list1.search_item("13:23:00");
 	list1.search_item("10:41:00");
+	list1.delete_item(2);
+	display(list1);
+	cout << list1.get_item_count() << endl;
 	return 0;
 }
 

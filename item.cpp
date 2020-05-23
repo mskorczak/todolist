@@ -59,7 +59,11 @@ ostream& operator<<(ostream& os, const Item& item)
 	os << "Item ID: " << item.get_item_id() << endl;
 	os << "Item Title: " << item.get_item_title() << endl;
 	os << "Item Desc: " << item.get_item_desc() << endl;
-	os << "Item Time Set: " << item.get_item_time_set() << endl;
-	os << "Item Time Due: " << item.get_item_time_due() << endl;
+	time_t ts_t = item.get_item_time_set();
+	time_t td_t = item.get_item_time_due();
+	tm *ts = localtime(&ts_t);
+	tm *td = localtime(&td_t);
+	os << "Item Time Set: " << ts->tm_hour << ":" << ts->tm_min << endl;
+	os << "Item Time Due: " << td->tm_hour << ":" << td->tm_min << endl;
 	return os;
 }
