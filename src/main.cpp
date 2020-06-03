@@ -22,19 +22,21 @@ int main()
 	list1.add_item("", "", time(NULL), time(NULL));
 	list1.add_item("test 2", "big stinky description", time(NULL), time(NULL));
 	list1.add_item("search BIG","desc", time(NULL), time(NULL));
-	display(list1);
-	list1.search_item("search");
-	list1.search_item("test");
-	list1.search_item("13:23:00");
-	list1.search_item("10:41:00");
-	list1.delete_item("test");
-	display(list1);
+	//display(list1);
+	//list1.search_item("search");
+	//list1.search_item("test");
+	//list1.search_item("13:23:00");
+	//list1.search_item("10:41:00");
+	//list1.delete_item("test");
+	//display(list1);
 	Item test = list1.get_list().at(0);
-	cout << test << endl;
+	//cout << test << endl;
 	test.set_item_status(true);
-	cout << test << endl;
+	//cout << test << endl;
+	display(list1);
 	test.add_item_dependency(2);
-	cout << test << endl;
+	list1.add_item_dependency(1,3);
+	display(list1);
 	return 0;
 }
 

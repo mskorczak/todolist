@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include <algorithm>
 #include "item.hpp"
 #include "todo.hpp"
 
@@ -30,6 +31,12 @@ void TodoList::add_item(string title, string desc, time_t set, time_t due)
 	}
 	Item add(total_item_count, title, desc, set, due);
 	todo_list.push_back(add);
+}
+
+void TodoList::add_item(Item item)
+{
+	total_item_count++;
+	todo_list.push_back(item);
 }
 
 vector<Item> TodoList::get_list() const
@@ -119,3 +126,26 @@ void TodoList::delete_item(int id){
 	swap_list(new_list);
 }
 
+Item TodoList::get_item(int id) const
+{
+	for(int i = 0; i < get_item_count(); i++)
+	{
+		if(id == get_list()[i].get_item_id())
+		{
+			return get_list()[i];
+		}
+	}
+	return Item(999,"ERROR","ERROR",time(NULL),time(NULL));
+}
+void TodoList::add_item_dependency(int item_id, int dependency_id)
+{
+	Item item = get_item(item_id);
+	vector<int> dependencies = item.get_item_dependencies();
+	if(find(dependencies.begin(),dependencies.end(),dependency_id) == dependencies.end())
+	{
+		item.add_item_dependency(dependency_id);
+	}
+	cout << "item adding dep" << endl << item << endl;
+	delete_item(item_id);
+	add_item(item);
+}
