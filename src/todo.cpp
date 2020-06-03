@@ -3,27 +3,10 @@
 #include <string>
 #include <vector>
 #include <ctime>
-#include "item.cpp"
+#include "item.hpp"
+#include "todo.hpp"
 
 using namespace std;
-
-class TodoList
-{
-	public:
-		TodoList(string title);
-		void add_item(string title, string desc, time_t set, time_t due);
-		void delete_item(string search_term);
-		void delete_item(int id);
-		void swap_list(vector<Item> new_list);
-		int get_item_count() const;
-		vector<Item> get_list() const;
-		string get_todo_title() const;
-		vector<int> search_item(string search_term) const;
-	private:
-		vector<Item> todo_list;
-		string todo_title;
-		int total_item_count;
-};
 
 //todo list methods
 
@@ -98,7 +81,7 @@ vector<int> TodoList::search_item(string search_term) const
 			time_t set = get_list()[i].get_item_time_set();
 			time_t due = get_list()[i].get_item_time_due();
 			tm *tm_set = localtime(&set);
-			tm *tm_due = localtime(&set);	
+			tm *tm_due = localtime(&due);	
 			//this will not take seconds into account
 			if(((tokens[0] == tm_set->tm_hour) && (tokens[1] == tm_set->tm_min)) || ((tokens[0] == tm_due->tm_hour) && (tokens[1] == tm_due->tm_min)))
 			{
@@ -118,7 +101,7 @@ vector<int> TodoList::search_item(string search_term) const
 void TodoList::delete_item(string search_term)
 {
 	vector<int> ids = search_item(search_term);
-	for(int i = 0; i < ids.size(); i++)
+	for(unsigned int i = 0; i < ids.size(); i++)
 	{
 		delete_item(ids[i]);
 	}
@@ -134,35 +117,5 @@ void TodoList::delete_item(int id){
 		}
 	}
 	swap_list(new_list);
-}
-
-void display(TodoList todo)
-{
-	cout << "Todo Title: " << todo.get_todo_title() << endl;
-	for(int i = 0; i < todo.get_item_count(); i++)
-	{
-		cout << todo.get_list()[i];
-	}
-	cout << endl;
-}
-
-int main()
-{
-	TodoList list1("list 1");
-	list1.add_item("", "", time(NULL), time(NULL));
-	list1.add_item("test 2", "big stinky description", time(NULL), time(NULL));
-	list1.add_item("search BIG","desc", time(NULL), time(NULL));
-	display(list1);
-	list1.search_item("search");
-	list1.search_item("test");
-	list1.search_item("13:23:00");
-	list1.search_item("10:41:00");
-	list1.delete_item("test");
-	display(list1);
-	Item test = list1.get_list().at(0);
-	cout << test << endl;
-	test.set_item_status(true);
-	cout << test << endl;
-	return 0;
 }
 
