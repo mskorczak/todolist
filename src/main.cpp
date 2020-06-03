@@ -33,6 +33,8 @@ int main()
 	cout << test << endl;
 	test.set_item_status(true);
 	cout << test << endl;
+	test.add_item_dependency(2);
+	cout << test << endl;
 	return 0;
 }
 

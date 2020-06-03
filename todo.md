@@ -11,7 +11,7 @@
 	[x] deletion based on title
 	[x] deletion based on description
 	[x] deletion based on id
-[] item status
-	[] whether an item is completed or not
+[x] item status
+	[x] whether an item is completed or not
 [] item dependency
 	[] an item needs to either have other items completed to change its status or an item that is completed gets the other dependent items changed

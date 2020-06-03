@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include "item.hpp"
 
 using namespace std;
@@ -46,9 +47,17 @@ bool Item::get_item_status() const
 
 void Item::set_item_status(bool status)
 {
-	cout << "function called " << item_status <<  endl;
 	item_status = status;
-	cout << "function done " << item_status <<  endl;
+}
+
+vector<int> Item::get_item_dependencies() const
+{
+	return item_dependencies;
+}
+
+void Item::add_item_dependency(int item_id)
+{
+	item_dependencies.push_back(item_id);
 }
 
 ostream& operator<<(ostream& os, const Item& item)
@@ -62,6 +71,12 @@ ostream& operator<<(ostream& os, const Item& item)
 	tm *td = localtime(&td_t);
 	os << "Item Time Set: " << ts->tm_hour << ":" << ts->tm_min << endl;
 	os << "Item Time Due: " << td->tm_hour << ":" << td->tm_min << endl;
-	os << "Item Completion Status: " << item.get_item_status() << endl; 
+	os << "Item Completion Status: " << item.get_item_status() << endl;
+	os << "Item Dependencies: " << endl;
+	for(unsigned int i = 0; i < item.get_item_dependencies().size(); i++)
+	{
+		os << item.get_item_dependencies().at(i);
+	}
+	os << endl;
 	return os;
 }
